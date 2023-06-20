@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div th:include="@{/user/head}"></div>
+    <div class="layui-form" style="padding: 80px;">
+        <table class="layui-table" lay-size="lg">
+            <colgroup>
+                <col width="400">
+                <col>
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>用户名</td>
+                    <td> <input type="text" id="userName" style="border: none;" value="无"></td>
+                </tr>
+                <tr>
+                    <td>电话号码</td>
+                    <td> <input type="text" id="phone" style="border: none;" value="无"> </td>
+                </tr>
+                <tr>
+                    <td>邮箱</td>
+                    <td> <input type="text" id="email" style="border: none;" value="无"> </td>
+                </tr>
+                <tr>
+                    <td>我的预约</td>
+                    <td>
+                        <table class="layui-hide" id="test"></table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>我的反馈</td>
+                    <td>
+                        <table class="layui-hide" id="test1"></table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript" th:inline="none">
+        $.ajax({
+                url: "/testBoot/getuserbyid",
+                type: "get",
+                success: function (data) {
+                    var temp = data.data[0];
+                    createTable(temp);
+                },
+                error: function () {
+                    alert("获取用户信息失败，请刷新界面或重新登录");
+                }
+            });
+        function createTable(data) {
+            var Id = data["id"],
+            realName = data["realName"],
+            phone = data["phone"],
+            email = data["email"];
+
+            $("#userName").val(realName);
+            $("#phone").val(phone);
+            $("#email").val(email);
+
+            layui.use('table', function () {
+                var table = layui.table;
+
+                table.render({
+                    elem: '#test'
+                    , url: "/testBoot/getdbtime?userId=" + Id
+                    , height: 220
+                    , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                    , cols: [[
+                        { field: 'timeId', width: 200, title: 'ID', sort: true }
+                        , { field: 'roomsId', width: 200, title: '会议室ID',sort: true }
+                        , { field: 'startDate', width: 200, title: '开始日期', sort: true }
+                        , { field: 'endDate', width: 200, title: '结束日期',sort: true }
+                        , { field: 'startTime', width: 200, title: '开始时间',sort: true }
+                        , { field: 'endTime', width: 200, title: '结束时间',sort: true }
+                    ]]
+
+                });
+
+                table.render({
+                    elem: '#test1'
+                    , url: "/testBoot/getmessage?userId=" + Id
+                    , height: 220
+                    , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                    , cols: [[
+                        { field: 'messageId', width: 140, title: 'ID', sort: true }
+                        , { field: 'content', width: 800, title: '信息内容' }
+                        , { field: 'messageTime', width: 160, title: '发布时间' }
+                        , { field: 'messageType', title: '信息种类' }
+                    ]]
+                });
+            });
+        };
+    </script>
+</body>
+
+</html>

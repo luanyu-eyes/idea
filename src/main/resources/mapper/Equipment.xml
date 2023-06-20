@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.EquipmentMapper">
+ 
+    <resultMap id="BaseResultMap" type="com.example.demo.domain.Equipment">
+        <result column="roomsId" jdbcType="INTEGER" property="roomsId" />
+        <result column="monitor" jdbcType="VARCHAR" property="monitor" />
+        <result column="WIFI" jdbcType="VARCHAR" property="WIFI" />
+        <result column="megaphone" jdbcType="VARCHAR" property="megaphone" />
+        <result column="screen" jdbcType="VARCHAR" property="screen" />
+    </resultMap>
+ 
+    <select id="getAll" resultType="com.example.demo.domain.Equipment">
+        select * from equipment where roomsId = #{roomsId}
+    </select>
+
+</mapper>

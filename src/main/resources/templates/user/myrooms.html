@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script th:src="@{/assets/js/layui/layui.js}"></script>
+  <script th:src="@{/assets/js/jquery.js}"></script>
+</head>
+<div th:include="@{/user/head}"></div>
+<div style="padding:40px; width: 60%;margin: auto;margin-top: 60px;" class="layui-bg-gray">
+  <div class="layui-form">
+    <table class="layui-table" lay-size="lg">
+      <colgroup>
+        <col width="450">
+        <col>
+      </colgroup>
+      <tbody>
+        <tr>
+          <td>会议室名称</td>
+          <td ><input id="roomsName" style="border: none;"></p></td>
+        </tr>
+        <tr>
+          <td>会议室位置</td>
+          <td><input id="position" style="border: none;"></td>
+        </tr>
+        <tr>
+          <td>会议室类型</td>
+          <td ><input id="roomsType" style="border: none;"></td>
+        </tr>
+        <tr>
+          <td>设备配置</td>
+          <td><input id="equipment" style="border: none;width: 90%;"></td>
+        </tr>
+        <tr>
+          <td>时间选择</td>
+          <td>
+            <div class="layui-inline">
+              <label class="layui-form-label">日期</label>
+              <div class="layui-input-inline">
+                <input type="text"  class="layui-input" id="test10" placeholder=" - ">
+              </div>
+            </div>
+            <div class="layui-inline">
+              <label class="layui-form-label">时间</label>
+              <div class="layui-input-inline">
+                <input type="text"  class="layui-input" id="test11" placeholder=" - ">
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button id="btn" class="layui-btn" style="margin-left: 45%;margin-top: 30px;">立即预约</button>
+    <script>
+      layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({
+          elem: '#test10'
+          , type: 'date'
+          , range: true
+          ,min: 0
+          ,max: 2
+        });
+        laydate.render({
+          elem: '#test11'
+          , type: 'time'
+          , range: true
+          ,min: "9:00:00"
+          ,max: "23:00:00"
+        });
+      });
+        $.ajax({
+          url: '/testBoot/getval',
+          type: "get",
+          data: { roomId: 1 },
+          dataType: "json",
+
+          success: function (data) {
+            var temp = JSON.stringify(data.data);
+            var roomsId = data.data;
+            //alert(roomsId);
+            get(parseInt(roomsId));
+          },
+          error: function () {
+          }
+        });
+      function get(roomsId) {
+        let temp1,temp2,temp3;
+        $.ajax({
+          url: '/testBoot/getrooms',
+          type: "get",
+          data: { roomId: roomsId },
+          dataType: "json",
+          success: function (data) {
+            temp1 = data.data[0];
+            //alert(data.data[0]["roomsId"]);
+            //alert(temp1["roomsName"]);
+            $("#roomsName").val(temp1["roomsName"]);
+            var temp = temp1["roomsFloor"] + "号楼" + temp1["roomsLayer"] + "层" + temp1["roomsNum"];
+            $("#position").val(temp);
+            temp = temp1["roomsType"];
+            $("#roomsType").val(temp);
+          },
+          error: function () {
+          }
+        });
+
+        $.ajax({
+          url: '/testBoot/getequipment',
+          type: "get",
+          data: { roomId: roomsId },
+          dataType: "json",
+          success: function (data) {
+            temp2 = data.data[0];
+            //alert(JSON.stringify(data.data[0]));
+            var temp = "WIFI:" + temp2["wifi"] + "  智慧终端：" + temp2["screen"] + "  摄像头：" + temp2["monitor"] + "  扩音器：" + temp2["megaphone"]; 
+            $("#equipment").val(temp);
+          },
+          error: function () {
+          }
+        });
+
+        $.ajax({
+          url: '/testBoot/getdbtime',
+          type: "get",
+          data: { roomId: roomsId },
+          dataType: "json",
+          success: function (data) {
+            temp3 = data.data;
+            //alert(temp);
+          },
+          error: function () {
+          }
+        });
+      }
+
+    </script>
+  </div>
+</div>
+</body>
+
+</html>

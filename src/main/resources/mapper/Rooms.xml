@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.RoomsMapper">
+ 
+    <resultMap id="BaseResultMap" type="com.example.demo.domain.Rooms">
+        <result column="roomsId" jdbcType="INTEGER" property="roomsId" />
+        <result column="roomsName" jdbcType="VARCHAR" property="roomsName" />
+        <result column="roomsFloor" jdbcType="INTEGER" property="roomsFloor" />
+        <result column="roomsLayer" jdbcType="INTEGER" property="roomsLayer" />
+        <result column="roomsNum" jdbcType="INTEGER" property="roomsNum" />
+        <result column="roomsType" jdbcType="VARCHAR" property="roomsType" />
+        <result column="present" jdbcType="VARCHAR" property="present" />
+    </resultMap>
+ 
+    <select id="getAll" resultType="com.example.demo.domain.Rooms">
+        select * from rooms where roomsId = #{roomsId}
+    </select>
+
+    <delete id="delete">
+        delete from rooms where roomsId = #{roomsId}
+    </delete>
+
+    <insert id="insert" parameterType="java.util.List">
+        insert into rooms(roomsName,roomsFloor,roomsLayer,roomsNum,roomsType,present) 
+        values (#{roomsName},#{roomsFloor},#{roomsLayer},#{roomsNum},#{roomsType},#{present})
+    </insert>
+
+    <update id="update">
+        update rooms set roomsName=#{roomsName},roomsFloor=#{roomsFloor},roomsLayer=#{roomsLayer},roomsNum=#{roomsNum},roomsType=#{roomsType},present=#{present} where roomsId=#{roomsId}
+    </update>
+</mapper>

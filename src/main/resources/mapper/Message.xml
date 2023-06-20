@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.MessageMapper">
+ 
+    <resultMap id="BaseResultMap" type="com.example.demo.domain.Message">
+        <result column="messageId" jdbcType="INTEGER" property="messageId" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="messageTime" jdbcType="DATE" property="messageTime" />
+        <result column="userId" jdbcType="INTEGER" property="userId" />
+        <result column="messageType" jdbcType="VARCHAR" property="messageType" />
+    </resultMap>
+ 
+    <select id="getAll" resultType="com.example.demo.domain.Message">
+        select * from message where userId = #{userId}
+    </select>
+
+    <delete id="delete">
+        delete from message where messageId = #{messageId}
+    </delete>
+
+    <update id="update">
+        update message set content=#{content},messageTime=#{messageTime},userId=#{userId},messageType=#{messageType} where messageId=#{messageId}
+    </update>
+
+    <insert id="insert" parameterType="java.util.List">
+        insert into message(content,messageTime,userId,messageType) 
+        values (#{content},#{messageTime},#{userId},#{messageType})
+    </insert>
+ 
+</mapper>

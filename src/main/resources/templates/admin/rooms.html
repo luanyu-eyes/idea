@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div th:include="@{/admin/adminhead}"></div>
+
+    <div style="padding: 40px;">
+        <table class="layui-hide" id="test" lay-filter="test"></table>
+    </div>
+
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+          <button class="layui-btn layui-btn-sm" lay-event="insert">插入新数据</button>
+          <table class="layui-table layui-bg-gray" lay-skin="line" id="insertTable" style="display:none;">
+            <colgroup>
+                <col width="250">
+                <col width="250">
+                <col width="250">
+                <col width="250">
+                <col width="250">
+                <col width="250">
+                <col width="250">
+                <col>
+              </colgroup>
+            <tr>
+                <td><div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;text-align: left;">会议室名称</label>
+                    <div class="layui-input-inline">
+                      <input id="roomsName" type="text" name="username" lay-verify="required" placeholder="请输入不超过8个字符" autocomplete="off" class="layui-input">
+                    </div>
+                  </div></td>
+                <td><div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;text-align: left;">楼号</label>
+                    <div class="layui-input-inline">
+                      <input id="roomsFloor" type="text" name="username" lay-verify="required" placeholder="请输入整数" autocomplete="off" class="layui-input">
+                    </div>
+                  </div></td>
+                <td><div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;text-align: left;">层数</label>
+                    <div class="layui-input-inline">
+                      <input id="roomsLayer" type="text" name="username" lay-verify="required" placeholder="请输入整数" autocomplete="off" class="layui-input">
+                    </div>
+                  </div></td>
+                <td><div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;text-align: left;">房间号</label>
+                    <div class="layui-input-inline">
+                      <input id="roomsNum" type="text" name="username" lay-verify="required" placeholder="请输入整数" autocomplete="off" class="layui-input">
+                    </div>
+                  </div></td>
+                <td><div class="layui-form-item">
+                    <label class="layui-form-label" style="width: 150px;text-align: left;">房间类型</label>
+                    <div class="layui-input-inline">
+                        <select id="roomsType" name="interest" lay-filter="aihao">
+                            <option value="小型会议室">小型会议室</option>
+                            <option value="中型会议室">中型会议室</option>
+                            <option value="大型会议室">大型会议室</option>
+                            <option value="礼堂">礼堂</option>
+                          </select>
+                    </div>
+                  </div></td>
+                  <td>
+                    <button class="layui-btn layui-btn-sm" lay-event="destory">插入</button>
+                  </td>
+            </tr>
+          </table>
+          </div>
+          
+    </script>
+
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+      </script>
+
+    <script type="text/javascript" th:inline="none">
+        refreshTable();
+        function deleterooms(idTemp) {
+            $.ajax({
+                url: '/delete/rooms',
+                type: "post",
+                data: { roomsId: idTemp },
+                success: function (data) {
+                    var temp = JSON.stringify(data.data);
+                },
+                error: function () {
+                    layer.alert("删除数据失败");
+                }
+            });
+        };
+        function insertrooms(datarooms) {
+            alert(JSON.stringify(datarooms));
+            $.ajax({
+                url: '/insert/rooms',
+                type: "post",
+                data: JSON.stringify(datarooms),
+                contentType: "application/json",
+                success: function (data) {
+                    var temp = JSON.stringify(data.data);
+                },
+                error: function () {
+                    layer.alert("插入数据失败");
+                }
+            });
+        }
+        function insert() {
+            $.ajax({
+                url: '/insert/rooms',
+                type: "post",
+                data: JSON.stringify({
+                    "roomsId": 0,
+                    "roomsName": $("#roomsName").val(),
+                    "roomsFloor": $("#roomsFloor").val(),
+                    "roomsLayer": $("#roomsLayer").val(),
+                    "roomsNum": $("#roomsNum").val(),
+                    "roomsType": $("#roomsType").val(),
+                    "present": "空闲中"
+                }),
+                contentType: "application/json",
+                success: function (data) {
+                    var temp = JSON.stringify(data.data);
+                    layer.alert("插入数据成功");
+                },
+                error: function () {
+                    layer.alert("插入数据失败");
+                }
+            });
+        }
+        function updateRooms(roomsId) {
+
+        }
+        function create() {
+            $("#insertTable").attr("style", "display:block");
+        }
+        function destoryTable() {
+            $("#insertTable").attr("style", "display:none");
+            
+            refreshTable();
+        }
+
+
+        function refreshTable() {
+            layui.use('table', function () {
+                var table = layui.table;
+
+                table.render({
+                    elem: '#test'
+                    , url: "/testBoot/getAllRooms"
+                    , toolbar: '#toolbarDemo'
+                    , defaultToolbar: ['filter', 'exports', 'print']
+                    , title: '用户数据表'
+                    , cols: [[ //表头
+                        { field: 'roomsId', title: 'ID', width: 110, sort: true, fixed: 'left', totalRowText: '合计：' }
+                        , { field: 'roomsName', title: '会议室名称', width: 260, edit: 'text' }
+                        , { field: 'roomsFloor', title: '楼号', width: 260, sort: true, edit: 'text', totalRow: true }
+                        , { field: 'roomsLayer', title: '层数', width: 260, sort: true, edit: 'text' }
+                        , { field: 'roomsNum', title: '房间号', width: 260, sort: true, edit: 'text', totalRow: '{{ parseInt(d.TOTAL_NUMS) }} 分' }
+                        , { field: 'roomsType', title: '类型', width: 260, edit: 'text' }
+                        , { field: 'present', title: '状态' }
+                        , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 100 }
+                    ]]
+                });
+
+                //头工具栏事件
+                table.on('toolbar(test)', function (obj) {
+                    var checkStatus = table.checkStatus(obj.config.id);
+                    switch (obj.event) {
+                        case 'insert':
+                            create();
+                            break;
+                        case 'destory':
+                            insert();
+                            destoryTable();
+                            break;
+                    };
+                });
+
+                //监听行工具事件
+                table.on('tool(test)', function (obj) {
+                    var data = obj.data;
+                    //console.log(obj)
+                    if (obj.event === 'del') {
+                        layer.confirm('真的删除行么', function (index) {
+                            obj.del();
+                            deleterooms(data.roomsId);
+                            layer.close(index);
+                            refreshTable();
+                        });
+                    }
+                });
+                table.on('edit(test)', function (obj) {
+                    var value = obj.value //得到修改后的值
+                        , data = obj.data //得到所在行所有键值
+                        , field = obj.field; //得到字段
+                    $.ajax({
+                        url: '/update/rooms',
+                        type: "post",
+                        data: JSON.stringify({
+                            "roomsId": data.roomsId,
+                            "roomsName": data.roomsName,
+                            "roomsFloor": data.roomsFloor,
+                            "roomsLayer": data.roomsLayer,
+                            "roomsNum": data.roomsNum,
+                            "roomsType": data.roomsType,
+                            "present": data.present,
+                        }),
+                        contentType: "application/json",
+                        success: function (data) {
+                            var temp = JSON.stringify(data.data);
+                            layer.alert("更新数据成功");
+                        },
+                        error: function () {
+                            if(field == "roomsType")
+                            {
+                                layer.alert("更新数据失败,会议室类型只有 小型会议室、中型会议室、大型会议室、礼堂四种,请注意填写规范");
+                            }
+                            else{
+                            layer.alert("更新数据失败");}
+                        }
+                    });
+                });
+            });
+        }
+    </script>
+
+</body>
+
+</html>

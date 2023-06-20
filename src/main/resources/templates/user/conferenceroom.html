@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script th:src="@{/assets/js/layui/layui.js}"></script>
+  <script th:src="@{/assets/js/jquery.js}"></script>
+  <link rel="stylesheet" th:href="@{/assets/js/layui/css/layui.css}">
+</head>
+
+<body>
+  <div th:include="@{/user/head}"></div>
+  <div style="width: 90%;margin: auto;margin-top: 30px;">
+  <table class="layui-hide" id="test" lay-filter="test"></table>
+</div>
+  <script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">预约</button>
+  </div>
+</script>
+
+  <script type="text/javascript" th:inline="none">
+    layui.use('table', function () {
+      var table = layui.table;
+
+      table.render({
+        elem: '#test'
+        , url: '/testBoot/getAllRooms'
+        , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        , toolbar: '#toolbarDemo'
+        , cols: [[
+          { type: 'radio' }
+          , { field: 'roomsId', title: 'ID', sort: true, align: 'center' }
+          , { field: 'roomsName', title: '房间名称', align: 'center' } //width 支持：数字、百分比和不填写。你还可以通过 minWidth 参数局部定义当前单元格的最小宽度，layui 2.2.1 新增
+          , { field: 'roomsType', title: '房间类型', align: 'center' }
+          , { field: 'roomsFloor', title: '楼号', align: 'center' ,sort:"true"}
+          , { field: 'roomsLayer', title: '层数', align: 'center',sort:"true" }
+          , { field: 'roomsNum', title: '房间号', align: 'center' ,sort:"true"}
+          , { field: 'present', title: '状态', align: 'center' }
+        ]]
+      });
+      table.on('toolbar(test)', function (obj) {
+        var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+        switch (obj.event) {
+          case 'getCheckData':
+            var data = checkStatus.data;  //获取选中行数据
+            var temp = (JSON.stringify(data[0]["roomsId"]));
+            window.location.href = "/work/myrooms" + "?roomId=" + temp;
+            break;
+        };
+      });
+    });
+  </script>
+</body>
+
+</html>

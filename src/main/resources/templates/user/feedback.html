@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script th:src="@{/assets/js/layui/layui.js}"></script>
+    <script th:src="@{/assets/js/jquery.js}"></script>
+</head>
+
+<body>
+    <div th:include="@{/user/head}"></div>
+    <div class="layui-bg-white" style="padding: 50px;margin-top: 50px;">
+        <form class="layui-form layui-form-pane" action="" style="margin: 30px;" lay-filter="formmessage">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">姓名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="username" lay-verify="required" autocomplete="off" class="layui-input"
+                            placeholder="请输入真实姓名">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">手机</label>
+                    <div class="layui-input-inline">
+                        <input type="tel" name="phone" autocomplete="off" class="layui-input" placeholder="非必填项">
+                    </div>
+                </div>
+            </div>
+            <div style="height: 30px;"></div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="email" autocomplete="off" class="layui-input" placeholder="非必填项">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="messageTime" id="date" lay-verify="date" placeholder="yyyy-MM-dd"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div style="height: 30px;"></div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">信息类型</label>
+                <div class="layui-input-block">
+                    <select name="messageType" id="messageType" lay-filter="aihao">
+                        <option value="1" selected="">改进建议</option>
+                        <option value="2">故障反馈</option>
+                    </select>
+                </div>
+            </div>
+            <div style="height: 30px;"></div>
+            <div id="hide" style="display: none;">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">会议室ID</label>
+                        <div class="layui-input-block">
+                            <input id="S" type="text" name="roomsId" lay-verify="none" autocomplete="off"
+                                class="layui-input">
+                        </div>
+                    </div>
+                </div>
+                <div style="height: 30px;"></div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <textarea id="remarksmessage" placeholder="请提出您认为需要改进的内容，我们会尽我们的最大努力优化您的体验" class="layui-textarea"
+                        lay-verify="required" name="content"></textarea>
+                </div>
+            </div>
+            <div style="height: 30px;"></div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function () {
+            var form = layui.form
+                , layer = layui.layer
+                , layedit = layui.layedit
+                , laydate = layui.laydate;
+
+            //日期
+            laydate.render({
+                elem: '#date'
+            });
+
+            form.on('select(aihao)', function () {
+                var data = form.val("formmessage");
+                if (JSON.stringify(data.messageType) == JSON.stringify("2")) {
+                    $("#hide").css("display", "block");
+                    $("#remarksmessage").attr("placeholder", "请描述故障的详细内容");
+                    $("#S").attr("lay-verify", "required");
+                } else {
+                    $("#hide").css("display", "none");
+                    $("#remarksmessage").attr("placeholder", "请提出您认为需要改进的内容，我们会尽我们的最大努力优化您的体验");
+                    $("#S").attr("lay-verify", "none");
+                };
+            });
+
+            //监听指定开关
+            form.on('switch(switchTest)', function (data) {
+                layer.msg('开关checked：' + (this.checked ? 'true' : 'false'), {
+                    offset: '6px'
+                });
+                layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+            });
+
+            //监听提交
+            form.on('submit(demo1)', function (data) {
+                postMessage(data.field)
+                return false;
+            });
+        });
+        function postMessage(data) {
+            alert(JSON.stringify(data));
+            var messageType, content;
+            if (data.messageType == 1) {
+                messageType = "建议";
+                content = data.content;
+            } else {
+                messageType = "报修";
+                content = "ID为：" + data.roomsId + "的会议室有一下故障：" + data.content;
+            }
+            $.ajax({
+                url: '/insert/message',
+                type: "post",
+                data: JSON.stringify({
+                    "messageId": 0,
+                    "content": content,
+                    "messageTime": data.messageTime,
+                    "userId": 0,
+                    "messageType": messageType
+                }),
+                contentType: "application/json",
+                success: function (data) {
+                    var temp = JSON.stringify(data.data);
+                    layer.alert("提交成功");
+                },
+                error: function () {
+                    layer.alert("提交失败");
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

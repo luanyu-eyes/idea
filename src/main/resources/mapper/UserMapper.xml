@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.UserMapper">
+ 
+    <resultMap id="BaseResultMap" type="com.example.demo.domain.User">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="userName" jdbcType="VARCHAR" property="userName" />
+        <result column="passWord" jdbcType="VARCHAR" property="passWord" />
+        <result column="realName" jdbcType="VARCHAR" property="realName" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+    </resultMap>
+ 
+    <select id="Sel" resultType="com.example.demo.domain.User">
+        select * from user where id = #{id}
+    </select>
+
+    <select id="Sel1" resultType="com.example.demo.domain.User">
+        select * from user where userName = #{username}
+    </select>
+
+    <delete id="delete">
+        delete from user where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="java.util.List">
+        insert into user(userName,passWord,realName,phone,email) 
+        values (#{userName},#{passWord},#{realName},#{phone},#{email})
+    </insert>
+
+    <update id="update">
+        update user set userName=#{userName},passWord=#{passWord},realName=#{realName},phone=#{phone},email=#{email} where id=#{id}
+    </update>
+ 
+</mapper>
