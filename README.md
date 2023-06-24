@@ -492,19 +492,17 @@ table.render({
    });
 ```
 
- 
-
 运行截图：选择会议室
 
-  图4-2-1
+![image](https://github.com/luanyu-eyes/idea/assets/82947648/1c593fd2-dc0c-4d02-a405-756cc28793b3)
+​																											  图4-2-1
 
 
 
 选择预约时间并预约会议室
 
- 
-
-图4-2-2
+![image](https://github.com/luanyu-eyes/idea/assets/82947648/f187f313-89b2-44ef-9395-1a7aad3c93ad)
+​																							图4-2-2
 
  
 
@@ -538,6 +536,7 @@ form.on('submit(demo1)', function (data) {
 
 <div class="layui-input-inline">
 
+
 ```xml
             <select name="roomnum" lay-verify="required" autocomplete="off">
 
@@ -560,13 +559,13 @@ form.on('submit(demo1)', function (data) {
 
 用户提交信息界面：
 
- 
+ ![image-20230623153348851](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153348851.png)
 
 图4-3-1
 
 管理员后台操作界面：
 
-  
+  ![image-20230623153355996](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153355996.png)
 
 图4-3-2
 
@@ -720,37 +719,37 @@ table.on('toolbar(test)', function (obj) {
 
 管理员查看信息部分截图：
 
- 
+ ![image-20230623153408876](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153408876.png)
 
 图4-4-1
 
 管理员添加数据截图：
 
- 
+ ![image-20230623153415439](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153415439.png)
 
 图4-4-2
 
- 
+ ![image-20230623153422904](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153422904.png)
 
 图4-4-3
 
 管理员删除数据截图：
 
- 
+ ![image-20230623153442665](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153442665.png)
 
 图4-4-4
 
- 
+ ![image-20230623153447346](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153447346.png)
 
 图4-4-5
 
 管理员修改数据截图：
 
- 
+ ![image-20230623153503379](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153503379.png)
 
 图4-4-6
 
- 
+ ![image-20230623153459036](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153459036.png)
 
 图4-4-7
 
@@ -1000,27 +999,27 @@ table.render({
 
 管理员对用户信息进行增删，导出部分截图：
 
- 
+ ![image-20230623153518920](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153518920.png)
 
 图4-5-1
 
  
 
- 
+ ![image-20230623153522514](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153522514.png)
 
 图4-5-2
 
  
 
- 
+ ![image-20230623153532520](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153532520.png)
 
 图4-5-3
 
- 
+ ![image-20230623153538544](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153538544.png)
 
 图4-5-4
 
- 
+ ![image-20230623153543341](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153543341.png)
 
 图4-5-5
 
@@ -1174,12 +1173,116 @@ Xml代码：
 
 用户个人信息进行查看部分截图：
 
- 
+ ![image-20230623153553967](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153553967.png)
 
 图4-6-1
 
  
 
- 
+ ![image-20230623153557649](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153557649.png)
 
 图4-6-2
+
+# 四、项目的主要特色介绍
+
+1.本系统采用了Springboot的架构。Spring Boot 是一个基于 Spring 框架搭建起来的应用，它会嵌入Tomcat 、 Jetty 或者 Undertow 等服务器 ，并且不需要传统 的 WAR 文件进行部署。也就是说搭建 SpringBoot 项目并不需要单独下载 Tomcat 等传统的服务器：同时提供通过 Maven （或者 Grandle ）依赖的starter ，这些 starter 可以直接获取开发所需的相关包 ，通过这些 starter 项目就能以 JavaApplication 的形式运行 Spring Boot 的项目，而无须其他服务器配置：对于配置， Spring Boot 提供 Spring 框架的最大自动化配置，大量使用自动配置，使得开发者对 Spring 的配置尽量减少：此外还提供了 一些监测、自动检测的功能和外部配置，与此同时没有附加代码和 XML 的配置要求 。
+
+  Springboot前后端分离的特点，让我们在此次项目中能够独立的完成各自负责的部分，最后用统一的接口完成配置
+
+ 
+
+2.本系统主要采用mybatis与数据库进行交互，和JDBC比较起来的话，mybatis减少了百分之五十以上的代码量。Mybatis能够让sql语句与程序代码分离，开发更加简易
+
+ 
+
+3.本系统前端界面设计采用了layui框架，layui是一款采用自身模块规范编写的前端 UI 框架，它遵循原生的 HTML/CSS/JS 书写方式。它虽然外在极简，但是内容丰富，里面包含众多组件从核心代码到 API 都非常适合界面的快速开发。事实上layui更多是面向于后端开发者，而且它还拥有自己的模式。Layui框架简单易上手，适合于接触前端比较少的人员使用。
+
+ 
+
+# 五、项目采用的数据库
+
+   本系统采用MySQL数据库。本系统主要的实体有三个，用户信息，房间信息，文本信息。用户分为两类：普通用户和管理员。
+
+ 
+
+用户表/user
+
+ ![image-20230623153609422](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153609422.png)
+
+管理员表/admin
+
+ ![image-20230623153614249](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153614249.png)
+
+ 
+
+房间信息表包含了房间的种类，位置，状态等重要信息
+
+房间信息表/rooms
+
+roomsId： 主键，房间唯一标识
+
+roomsName：房间名称
+
+roomsFloor：房间位于的楼号
+
+roomsLayer：房间所处的层数
+
+roomsNum：房间号
+
+roomsType：房间种类（小，中，大，礼堂）
+
+present：状态（空闲中，使用中，维修中）
+
+ ![image-20230623153621649](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153621649.png)
+
+ 
+
+文本信息表包含了用户反馈的信息
+
+文本信息表/message
+
+messageId：唯一标识
+
+content：文本内容
+
+messageTime：文本发布的日期
+
+userId：发布人员的id标识
+
+messageType：文本信息的种类（建议，报修）
+
+ ![image-20230623153626310](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153626310.png)
+
+ 
+
+除去主要的三个表后，还有一些附加的表
+
+房间设备表/equipment
+
+roomsId：设备对应的房间的ID
+
+monitor：摄像机（有/无）
+
+WIFI：无线网络（有/无）
+
+Screen： 智慧终端（有/无）
+
+Megaohone：扩音器（有/无）
+
+ ![image-20230623153630586](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153630586.png)
+
+ 
+
+预约时间表/UserRoomsDate
+
+timeId、roomsId、userId：相关联的用户、房间以及时间表的ID
+
+startTime：预约开始的时间
+
+endTime：预约结束的时间
+
+startDate：预约开始的日期
+
+endTime：预约结束的日期
+
+![image-20230623153636064](C:\Users\22010\AppData\Roaming\Typora\typora-user-images\image-20230623153636064.png)
